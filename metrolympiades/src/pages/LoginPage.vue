@@ -1,43 +1,29 @@
 <script setup>
-import {ref} from "vue";
-import {useRouter} from "vue-router";
+import { ref } from "vue";
+import { useRouter } from "vue-router";
+import { fetchData } from '@/utils';
 
 const router = useRouter();
-
-const loginData = ref ({
-    email: "",
-    password: "",
+const loginData = ref({
+  email: "",
+  password: "",
 });
 
 const handleLogin = async () => {
   try {
-    const response = await fetch("http://localhost:3000/auth/login", {
+    const data = await fetchData("http://localhost:3000/auth/login", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify(loginData.value),
     });
-
-    if (response.ok) {
-      const data = await response.json();
-      
-      // Sauvegarde le nom de l'équipe dans localStorage
-      localStorage.setItem("teamName", data.team.name);
-      
-      // Sauvegarde l'utilisateur et d'autres données si nécessaire
-      localStorage.setItem("user", JSON.stringify(data));
-      localStorage.setItem("authToken", data.token);
-      
-      alert("Connexion réussie !");
-      router.push("/"); // Redirige après connexion réussie
-    } else {
-      const error = await response.json();
-      alert(`Erreur : ${error.message}`);
-    }
+    localStorage.setItem("teamName", data.team.name);
+    localStorage.setItem("authToken", data.token);
+    alert("Connexion réussie !");
+    router.push("/");
   } catch (error) {
-    console.error("Une erreur est survenue : ", error);
-    alert("Impossible de se connecter pour le moment.");
+    alert(`Erreur : ${error.message}`);
   }
 };
 
