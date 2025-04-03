@@ -27,6 +27,7 @@ const handleLogin = async () => {
       
       // Sauvegarde l'utilisateur et d'autres données si nécessaire
       localStorage.setItem("user", JSON.stringify(data));
+      localStorage.setItem("authToken", data.token);
       
       alert("Connexion réussie !");
       router.push("/"); // Redirige après connexion réussie

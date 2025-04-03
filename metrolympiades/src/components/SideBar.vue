@@ -14,18 +14,18 @@ onMounted(() => {
   const token = localStorage.getItem("user");
   isLoggedIn.value == token;
 
-  if(localStorage.getItem("user") === null) {
-    menuItems.value = [
-      { label: "Classement général", route: "/leaderboard" },
-      { label: "Se connecter", route: "/login" },
-    ]
-  } else {
+  if(localStorage.getItem("user") !== null) {
     menuItems.value = [
       { label: "Classement général", route: "/leaderboard" },
       { label: "Mon équipe", route: "/team" },
       { label: "Mes matchs", route: "/matches" },
       { label: "Se déconnecter", route: "/logout" },
     ];
+  } else {
+    menuItems.value = [
+      { label: "Classement général", route: "/leaderboard" },
+      { label: "Se connecter", route: "/login" },
+    ]
   }
   teamName.value = localStorage.getItem("teamName") || "Nom introuvable";
 });
