@@ -1,31 +1,27 @@
 <script setup>
-import 'material-design-icons/iconfont/material-icons.css';
 import SideBar from '@/components/SideBar.vue';
-import { onMounted } from 'vue';
+import { ref, onMounted } from "vue";
+import { fetchData } from '@/utils';
+
+const teams = ref([]);
+const errorMessage = ref("");
+const isLoading = ref(true);
 
 const fetchRanking = async () => {
   try {
-    const response = await fetch("http://localhost:3000/ranking", {
+    const data = await fetchData("http://localhost:3000/ranking", {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
       },
     });
-
-    if(response.ok) {
-      const data = await response.json();
-      teams.value = data;
-    } else {
-      const error = await response.json();
-      errorMessage.value = `Erreur : ${error.message}`;
-    }
-  } catch(error) {
-    console.error("Erreur lors de la récupération des données : ", error);
-    errorMessage.value = "Impossible de charger les classements pour le moment.";
+    teams.value = data;
+  } catch (error) {
+    errorMessage.value = `Erreur : ${error.message}`;
   } finally {
     isLoading.value = false;
   }
-}
+};
 
 onMounted(fetchRanking);
 </script>
