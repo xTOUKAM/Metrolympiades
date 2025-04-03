@@ -10,28 +10,34 @@ const loginData = ref ({
 });
 
 const handleLogin = async () => {
-    try {
-        const response = await fetch("http://localhost:3000/auth/login", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify(loginData.value),
-        });
+  try {
+    const response = await fetch("http://localhost:3000/auth/login", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(loginData.value),
+    });
 
-        if(response.ok) {
-            const data = await response.json();
-            localStorage.setItem("user", JSON.stringify(data));
-            alert("Connexion réussie !");
-            router.push("/home");
-        } else {
-            const error = await response.json();
-            alert(`Erreur : ${error.message}`);
-        }
-    } catch(error) {
-        console.error("Une erreur est survenue : ", error);
-        alert("Impossible de se connecter pour le moment");
+    if (response.ok) {
+      const data = await response.json();
+      
+      // Sauvegarde le nom de l'équipe dans localStorage
+      localStorage.setItem("teamName", data.team.name);
+      
+      // Sauvegarde l'utilisateur et d'autres données si nécessaire
+      localStorage.setItem("user", JSON.stringify(data));
+      
+      alert("Connexion réussie !");
+      router.push("/home"); // Redirige après connexion réussie
+    } else {
+      const error = await response.json();
+      alert(`Erreur : ${error.message}`);
     }
+  } catch (error) {
+    console.error("Une erreur est survenue : ", error);
+    alert("Impossible de se connecter pour le moment.");
+  }
 };
 
 const goToRegister = () => {

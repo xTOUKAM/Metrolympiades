@@ -1,9 +1,10 @@
 <script setup>
 import 'material-design-icons/iconfont/material-icons.css';
-import { ref } from "vue";
+import { onMounted, ref } from "vue";
 import { useRouter } from "vue-router";
 
 const router = useRouter();
+const teamName = ref("");
 
 const menuItems = ref([
   { label: "Classement général", route: "/leaderboard" },
@@ -14,23 +15,42 @@ const menuItems = ref([
 
 const isSidebarVisible = ref(true);
 
+onMounted(() => {
+  teamName.value = localStorage.getItem("teamName") || "Nom introuvable";
+});
+
+// Fonction pour basculer l'affichage de la sidebar
 const toggleSidebar = () => {
   isSidebarVisible.value = !isSidebarVisible.value;
 };
 
+// Fonction pour naviguer vers les différentes routes
 const navigate = (route) => {
-  router.push(route);
+  if (route === "/logout") {
+    localStorage.removeItem("authToken");
+    localStorage.removeItem("teamName");
+    router.push("/login");
+  } else {
+    router.push(route);
+  }
 };
 </script>
 
 <template>
   <div class="layout">
+    <!-- Bouton pour afficher/masquer la sidebar -->
     <button class="toggle-button" @click="toggleSidebar">
       <span class="material-icons">
         {{ isSidebarVisible ? "chevron_left" : "menu" }}
       </span>
     </button>
+
+    <!-- Sidebar -->
     <div class="sidebar" :class="{ hidden: !isSidebarVisible }">
+      <!-- Affichage du nom de l'équipe -->
+      <h2 class="team-name-display">{{ teamName }}</h2>
+
+      <!-- Menu des liens -->
       <ul>
         <li v-for="item in menuItems" :key="item.route" @click="navigate(item.route)">
           <span>{{ item.label }}</span>
@@ -40,13 +60,12 @@ const navigate = (route) => {
   </div>
 </template>
 
-  
-
 <style>
 .layout {
   display: flex;
 }
 
+/* Bouton toggle pour la sidebar */
 .toggle-button {
   position: absolute;
   top: 10px;
@@ -55,7 +74,7 @@ const navigate = (route) => {
   color: #ffffff;
   border: none;
   padding: 12px;
-  border-radius: 100%;
+  border-radius: 50%;
   cursor: pointer;
   transition: background-color 0.3s ease, transform 0.3s ease;
   z-index: 1000;
@@ -69,15 +88,14 @@ const navigate = (route) => {
   font-size: 18px;
 }
 
+/* Sidebar */
 .sidebar {
   background-color: #121212;
-  padding: 20px;
   width: 220px;
   height: 100vh;
   color: #e0e0e0;
   box-shadow: 2px 0 10px rgba(0, 0, 0, 0.5);
   position: fixed;
-  margin-top: 50px;
   top: 0;
   left: 0;
   transition: transform 0.3s ease;
@@ -87,6 +105,18 @@ const navigate = (route) => {
   transform: translateX(-100%);
 }
 
+/* Nom de l'équipe */
+.team-name-display {
+  margin-top: 100px;
+  font-size: 18px;
+  font-weight: bold;
+  color: #ffffff;
+  text-align: center;
+  margin-bottom: 20px;
+  text-transform: uppercase;
+}
+
+/* Liste des liens */
 .sidebar ul {
   list-style: none;
   padding: 0;
@@ -106,6 +136,7 @@ const navigate = (route) => {
   color: #ffffff;
 }
 
+/* Contenu principal */
 main {
   flex: 1;
   padding: 20px;
