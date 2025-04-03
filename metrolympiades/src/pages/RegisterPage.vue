@@ -31,7 +31,7 @@ const handleSubmit = async () => {
       const data = await response.json();
       localStorage.setItem("user", JSON.stringify(data));
       alert("Inscription réussie !");
-      router.push("/ranking");
+      router.push("/login");
     } else {
       const error = await response.json();
       alert(`Erreur : ${error.message}`);
@@ -53,19 +53,19 @@ const goToLogin = () => {
       <form @submit.prevent="handleSubmit">
         <div class="form-group">
           <label for="username">Nom d'utilisateur</label>
-          <input type="text" id="username" v-model="formData.username" required />
+          <input type="text" id="username" v-model="formData.username" required placeholder="Nom d'utilisateur" />
         </div>
         <div class="form-group">
           <label for="teamName">Nom de l'équipe</label>
-          <input type="text" id="teamName" v-model="formData.teamName" required />
+          <input type="text" id="teamName" v-model="formData.teamName" required placeholder="Nom de l'équipe"/>
         </div>
         <div class="form-group">
           <label for="email">Email</label>
-          <input type="email" id="email" v-model="formData.email" required />
+          <input type="email" id="email" v-model="formData.email" required placeholder="Email"/>
         </div>
         <div class="form-group">
           <label for="password">Mot de passe</label>
-          <input type="password" id="password" v-model="formData.password" required />
+          <input type="password" id="password" v-model="formData.password" required placeholder="Mot de passe"/>
         </div>
         <button :disabled="isSubmitDisabled" class="submit-button">S'inscrire</button>
       </form>
