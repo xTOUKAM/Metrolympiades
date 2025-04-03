@@ -29,7 +29,7 @@ const handleLogin = async () => {
       localStorage.setItem("user", JSON.stringify(data));
       
       alert("Connexion réussie !");
-      router.push("/home"); // Redirige après connexion réussie
+      router.push("/"); // Redirige après connexion réussie
     } else {
       const error = await response.json();
       alert(`Erreur : ${error.message}`);

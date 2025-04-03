@@ -4,18 +4,29 @@ import { onMounted, ref } from "vue";
 import { useRouter } from "vue-router";
 
 const router = useRouter();
+const isLoggedIn = ref(false);
 const teamName = ref("");
 
-const menuItems = ref([
-  { label: "Classement général", route: "/leaderboard" },
-  { label: "Mon équipe", route: "/team" },
-  { label: "Mes matchs", route: "/matches" },
-  { label: "Se déconnecter", route: "/logout" },
-]);
-
+const menuItems = ref([]);
 const isSidebarVisible = ref(true);
 
 onMounted(() => {
+  const token = localStorage.getItem("user");
+  isLoggedIn.value == token;
+
+  if(localStorage.getItem("user") === null) {
+    menuItems.value = [
+      { label: "Classement général", route: "/leaderboard" },
+      { label: "Se connecter", route: "/login" },
+    ]
+  } else {
+    menuItems.value = [
+      { label: "Classement général", route: "/leaderboard" },
+      { label: "Mon équipe", route: "/team" },
+      { label: "Mes matchs", route: "/matches" },
+      { label: "Se déconnecter", route: "/logout" },
+    ];
+  }
   teamName.value = localStorage.getItem("teamName") || "Nom introuvable";
 });
 
@@ -27,8 +38,7 @@ const toggleSidebar = () => {
 // Fonction pour naviguer vers les différentes routes
 const navigate = (route) => {
   if (route === "/logout") {
-    localStorage.removeItem("authToken");
-    localStorage.removeItem("teamName");
+    localStorage.clear();
     router.push("/login");
   } else {
     router.push(route);
