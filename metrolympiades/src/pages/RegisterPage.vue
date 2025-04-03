@@ -72,3 +72,4 @@ const goToLogin = () => {
       <button @click="goToLogin" class="link-button">Me connecter</button>
     </div>
 </template>
+

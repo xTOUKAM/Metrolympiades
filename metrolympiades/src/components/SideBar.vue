@@ -1,48 +1,34 @@
 <script setup>
 import 'material-design-icons/iconfont/material-icons.css';
-import { onMounted, ref } from "vue";
-import { useRouter } from "vue-router";
+import { ref } from "vue";
+import { useAuth, useNavigation } from "@/utils";
 
-const router = useRouter();
-const isLoggedIn = ref(false);
-const teamName = ref("");
-
+const { isLoggedIn, teamName, checkAuth } = useAuth();
+const { navigate } = useNavigation();
 const menuItems = ref([]);
 const isSidebarVisible = ref(true);
 
-onMounted(() => {
-  const token = localStorage.getItem("user");
-  isLoggedIn.value == token;
+checkAuth();
 
-  if(localStorage.getItem("user") !== null) {
-    menuItems.value = [
-      { label: "Classement général", route: "/leaderboard" },
-      { label: "Mon équipe", route: "/team" },
-      { label: "Mes matchs", route: "/matches" },
-      { label: "Se déconnecter", route: "/logout" },
-    ];
-  } else {
-    menuItems.value = [
-      { label: "Classement général", route: "/leaderboard" },
-      { label: "Se connecter", route: "/login" },
-    ]
-  }
-  teamName.value = localStorage.getItem("teamName") || "Nom introuvable";
-});
+if (isLoggedIn.value) {
+  menuItems.value = [
+    { label: "Classement général", route: "/leaderboard" },
+    { label: "Mon équipe", route: "/team" },
+    { label: "Mes matchs", route: "/games" },
+    { label: "Nouveau match", route: "/game" },
+    { label: "Ajouter une activité", route:"/add" },
+    { label: "Se déconnecter", route: "/logout" },
+  ];
+} else {
+  menuItems.value = [
+    { label: "Classement général", route: "/leaderboard" },
+    { label: "Se connecter", route: "/login" },
+  ];
+}
 
 // Fonction pour basculer l'affichage de la sidebar
 const toggleSidebar = () => {
   isSidebarVisible.value = !isSidebarVisible.value;
-};
-
-// Fonction pour naviguer vers les différentes routes
-const navigate = (route) => {
-  if (route === "/logout") {
-    localStorage.clear();
-    router.push("/");
-  } else {
-    router.push(route);
-  }
 };
 </script>
 

@@ -25,7 +25,19 @@ export const useAuth = () => {
 
 export const fetchData = async (url, options = {}) => {
   try {
-    const response = await fetch(url, options);
+    const token = localStorage.getItem("authToken");
+    if (!token) {
+      throw new Error("Utilisateur non authentifié.");
+    }
+
+    const response = await fetch(url, {
+      ...options,
+      headers: {
+        ...options.headers,
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
     if (response.ok) {
       return await response.json();
     } else {
@@ -49,7 +61,12 @@ export const useFormValidation = (fields) => {
   export const useNavigation = () => {
     const router = useRouter();
     const navigate = (route) => {
-      router.push(route);
+      if (route === "/logout") {
+        localStorage.clear();
+        router.push("/");
+      } else {
+        router.push(route);
+      }
     };
     return { navigate };
   };
