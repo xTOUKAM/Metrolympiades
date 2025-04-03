@@ -39,7 +39,7 @@ const toggleSidebar = () => {
 const navigate = (route) => {
   if (route === "/logout") {
     localStorage.clear();
-    router.push("/login");
+    router.push("/");
   } else {
     router.push(route);
   }
