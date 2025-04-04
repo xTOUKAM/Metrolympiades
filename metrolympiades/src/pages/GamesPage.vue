@@ -1,21 +1,31 @@
 <script setup>
 import SideBar from "@/components/SideBar.vue";
 import { ref, onMounted } from "vue";
+import { useRouter } from "vue-router";
 import { fetchData } from "@/utils";
 
+const router = useRouter();
 const matches = ref([]);
 const errorMessage = ref("");
 const isLoading = ref(true);
 const teamName = ref(localStorage.getItem("teamName") || "Nom de l'équipe");
 
-// Récupérer les matchs depuis l'API
+// Vérifier la connexion de l'utilisateur
+const checkAuthentication = () => {
+  const token = localStorage.getItem("authToken");
+  if (!token) {
+    router.push("/login");
+    return;
+    throw new Error("Utilisateur non authentifié.");
+  }
+};
+
+// Fonction pour récupérer les matchs
 const fetchMatches = async () => {
   try {
-    const token = localStorage.getItem("authToken");
-    if (!token) {
-      throw new Error("Utilisateur non authentifié. Veuillez vous connecter.");
-    }
+    checkAuthentication();
 
+    const token = localStorage.getItem("authToken");
     const data = await fetchData("http://localhost:3000/matches/me", {
       method: "GET",
       headers: {
@@ -32,7 +42,10 @@ const fetchMatches = async () => {
   }
 };
 
-onMounted(fetchMatches);
+onMounted(() => {
+  checkAuthentication();
+  fetchMatches();
+});
 </script>
 
 <template>

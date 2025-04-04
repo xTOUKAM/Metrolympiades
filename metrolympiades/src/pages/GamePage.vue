@@ -6,7 +6,6 @@ import { fetchData } from '@/utils';
 
 const router = useRouter();
 
-// Champs du formulaire pour créer un match
 const matchData = ref({
   team2Id: "",
   activityId: "",
@@ -20,13 +19,22 @@ const teams = ref([]);
 const activities = ref([]);
 const errorMessage = ref("");
 
+// Vérifier la connexion de l'utilisateur
+const checkAuthentication = () => {
+  const token = localStorage.getItem("authToken");
+  if (!token) {
+    router.push("/login");
+    return;
+    throw new Error("Utilisateur non authentifié.");
+  }
+};
+
+// Fonction pour récupérer les équipes disponibles
 const fetchTeams = async () => {
   try {
-    const token = localStorage.getItem("authToken");
-    if (!token) {
-      throw new Error("Utilisateur non authentifié. Veuillez vous connecter.");
-    }
+    checkAuthentication();
 
+    const token = localStorage.getItem("authToken");
     const data = await fetchData("http://localhost:3000/teams", {
       method: "GET",
       headers: {
@@ -40,13 +48,12 @@ const fetchTeams = async () => {
   }
 };
 
+// Fonction pour récupérer les activités disponibles
 const fetchActivities = async () => {
   try {
-    const token = localStorage.getItem("authToken");
-    if (!token) {
-      throw new Error("Utilisateur non authentifié. Veuillez vous connecter.");
-    }
+    checkAuthentication();
 
+    const token = localStorage.getItem("authToken");
     const data = await fetchData("http://localhost:3000/activities", {
       method: "GET",
       headers: {
@@ -59,13 +66,12 @@ const fetchActivities = async () => {
   }
 };
 
+// Fonction pour récupérer l'équipe de l'utilisateur
 const fetchUserTeam = async () => {
   try {
-    const token = localStorage.getItem("authToken");
-    if (!token) {
-      throw new Error("Utilisateur non authentifié. Veuillez vous connecter.");
-    }
+    checkAuthentication();
 
+    const token = localStorage.getItem("authToken");
     const data = await fetchData("http://localhost:3000/teams/me", {
       method: "GET",
       headers: {
@@ -79,14 +85,12 @@ const fetchUserTeam = async () => {
   }
 };
 
+// Fonction pour créer un match
 const createMatch = async () => {
   try {
-    const token = localStorage.getItem("authToken");
-    if (!token) {
-      router.push("/login");
-      throw new Error("Utilisateur non authentifié. Veuillez vous connecter.");
-    }
+    checkAuthentication();
 
+    const token = localStorage.getItem("authToken");
     await fetchData("http://localhost:3000/matches", {
       method: "POST",
       headers: {
@@ -97,13 +101,15 @@ const createMatch = async () => {
     });
 
     alert("Match créé avec succès !");
-    router.push("/matches");
+    router.push("/games");
   } catch (error) {
     errorMessage.value = `Erreur : ${error.message}`;
   }
 };
 
+// Récupérer les données nécessaires au montage
 onMounted(() => {
+  checkAuthentication();
   fetchUserTeam();
   fetchTeams();
   fetchActivities();

@@ -8,6 +8,16 @@ const router = useRouter();
 const newActivityName = ref("");
 const errorMessage = ref("");
 
+// Vérifier la connexion de l'utilisateur
+const checkAuthentication = () => {
+  const token = localStorage.getItem("authToken");
+  if (!token) {
+    router.push("/login");
+    return;
+    throw new Error("Utilisateur non authentifié.");
+  }
+};
+
 const addActivity = async () => {
   try {
     const token = localStorage.getItem("authToken");
@@ -32,6 +42,8 @@ const addActivity = async () => {
     errorMessage.value = `Erreur : ${error.message}`;
   }
 };
+
+checkAuthentication();
 </script>
 
 <template>

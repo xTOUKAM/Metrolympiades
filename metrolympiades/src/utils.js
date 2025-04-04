@@ -25,24 +25,26 @@ export const useAuth = () => {
 
 export const fetchData = async (url, options = {}) => {
   try {
+    const headers = {
+      ...options.headers,
+    };
+
     const token = localStorage.getItem("authToken");
-    if (!token) {
-      throw new Error("Utilisateur non authentifié.");
+    
+    if (token) {
+      headers.Authorization = `Bearer ${token}`;
     }
 
     const response = await fetch(url, {
       ...options,
-      headers: {
-        ...options.headers,
-        Authorization: `Bearer ${token}`,
-      },
+      headers,
     });
 
     if (response.ok) {
       return await response.json();
     } else {
       const error = await response.json();
-      throw new Error(error.message);
+      throw new Error(error.message || "Erreur inconnue.");
     }
   } catch (error) {
     console.error("Erreur API :", error);
