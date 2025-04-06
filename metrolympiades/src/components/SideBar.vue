@@ -12,21 +12,20 @@ checkAuth();
 
 if (isLoggedIn.value) {
   menuItems.value = [
-    { label: "Classement général", route: "/leaderboard" },
-    { label: "Mon équipe", route: "/team" },
-    { label: "Mes matchs", route: "/games" },
-    { label: "Nouveau match", route: "/game" },
-    { label: "Ajouter une activité", route:"/add" },
-    { label: "Se déconnecter", route: "/logout" },
+    { label: "Classement général", route: "/leaderboard", icon: "poll" },
+    { label: "Mon équipe", route: "/team", icon: "people" },
+    { label: "Mes matchs", route: "/games", icon: "people" },
+    { label: "Nouveau match", route: "/game", icon: "add_circle" },
+    { label: "Ajouter une activité", route:"/add", icon: "event" },
+    { label: "Se déconnecter", route: "/logout", icon: "exit_to_app" },
   ];
 } else {
   menuItems.value = [
-    { label: "Classement général", route: "/leaderboard" },
-    { label: "Se connecter", route: "/login" },
+    { label: "Classement général", route: "/leaderboard", icon: "poll" },
+    { label: "Se connecter", route: "/login", icon: "person" },
   ];
 }
 
-// Fonction pour basculer l'affichage de la sidebar
 const toggleSidebar = () => {
   isSidebarVisible.value = !isSidebarVisible.value;
 };
@@ -34,7 +33,7 @@ const toggleSidebar = () => {
 
 <template>
   <div class="layout">
-    <!-- Bouton pour afficher/masquer la sidebar -->
+    <!-- Bouton toggle pour la sidebar -->
     <button class="toggle-button" @click="toggleSidebar">
       <span class="material-icons">
         {{ isSidebarVisible ? "chevron_left" : "menu" }}
@@ -44,11 +43,12 @@ const toggleSidebar = () => {
     <!-- Sidebar -->
     <div class="sidebar" :class="{ hidden: !isSidebarVisible }">
       <!-- Affichage du nom de l'équipe -->
-      <h2 class="team-name-display">{{ teamName }}</h2>
+      <h2 class="team-name-display">{{ teamName || "METRO"}}</h2>
 
       <!-- Menu des liens -->
       <ul>
         <li v-for="item in menuItems" :key="item.route" @click="navigate(item.route)">
+          <span class="icon"><span class="material-icons">{{ item.icon }}</span></span>
           <span>{{ item.label }}</span>
         </li>
       </ul>
@@ -61,19 +61,19 @@ const toggleSidebar = () => {
   display: flex;
 }
 
-/* Bouton toggle pour la sidebar */
 .toggle-button {
   position: absolute;
-  top: 10px;
-  left: 10px;
+  top: 20px;
+  left: 20px;
   background-color: #007bff;
   color: #ffffff;
   border: none;
   padding: 12px;
   border-radius: 50%;
   cursor: pointer;
-  transition: background-color 0.3s ease, transform 0.3s ease;
   z-index: 1000;
+  font-size: 20px;
+  transition: background-color 0.3s ease;
 }
 
 .toggle-button:hover {
@@ -81,62 +81,74 @@ const toggleSidebar = () => {
 }
 
 .toggle-button .material-icons {
-  font-size: 18px;
+  font-size: 20px;
 }
 
 /* Sidebar */
 .sidebar {
   background-color: #121212;
-  width: 220px;
+  width: 240px;
   height: 100vh;
   color: #e0e0e0;
-  box-shadow: 2px 0 10px rgba(0, 0, 0, 0.5);
   position: fixed;
   top: 0;
   left: 0;
-  transition: transform 0.3s ease;
+  transition: transform 0.3s ease, opacity 0.3s ease;
+  padding: 20px 0;
+  overflow-y: auto;
 }
 
 .sidebar.hidden {
   transform: translateX(-100%);
+  opacity: 0;
 }
 
-/* Nom de l'équipe */
 .team-name-display {
-  margin-top: 100px;
-  font-size: 18px;
-  font-weight: bold;
+  margin-top: 7px;
+  font-size: 20px;
+  font-weight: 600;
   color: #ffffff;
   text-align: center;
   margin-bottom: 20px;
   text-transform: uppercase;
 }
 
-/* Liste des liens */
 .sidebar ul {
   list-style: none;
   padding: 0;
-  margin: 0;
+  margin: 50px 0 0 0;
 }
 
 .sidebar li {
-  margin: 10px 0;
-  padding: 10px;
-  border-radius: 6px;
-  transition: background-color 0.3s ease, color 0.3s ease;
+  display: flex;
+  align-items: center;
+  padding: 12px 20px;
+  border-radius: 8px;
+  transition: background-color 0.2s ease, padding-left 0.2s ease;
   cursor: pointer;
+  font-size: 16px;
 }
 
 .sidebar li:hover {
-  background-color: #007bff;
+  background-color: #0056b3;
+  padding-left: 30px;
+}
+
+.sidebar li span {
+  font-weight: 400;
+}
+
+.sidebar li .icon {
+  margin-right: 15px;
   color: #ffffff;
+  font-size: 20px;
 }
 
 /* Contenu principal */
 main {
   flex: 1;
   padding: 20px;
-  margin-left: 220px;
+  margin-left: 240px;
   background-color: #121212;
   color: #e0e0e0;
   transition: margin-left 0.3s ease;
@@ -148,11 +160,11 @@ main {
 
 @media (max-width: 768px) {
   .sidebar {
-    width: 180px;
+    width: 200px;
   }
 
   main {
-    margin-left: 180px;
+    margin-left: 200px;
   }
 }
 </style>
