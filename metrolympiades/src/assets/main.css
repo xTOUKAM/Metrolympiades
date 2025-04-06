@@ -80,6 +80,21 @@ button.link-button:hover {
 }
 
 /* Register & Login Pages */
+.login-page, .register-page {
+  max-width: 600px;
+  width: 100%;
+  background-color: #1e1e1e;
+  padding: 40px;
+  border-radius: 12px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+  animation: fadeIn 0.8s ease-out;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-top: 50px;
+}
+
 .page {
   max-width: 400px;
   width: 100%;
@@ -164,6 +179,20 @@ select, input {
 
 /* Matches Page */
 .matches-page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+
+.match-creation-page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+
+.activities-creation-page {
   display: flex;
   flex-direction: column;
   align-items: center;
