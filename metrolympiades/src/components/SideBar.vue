@@ -29,6 +29,17 @@ if (isLoggedIn.value) {
 const toggleSidebar = () => {
   isSidebarVisible.value = !isSidebarVisible.value;
 };
+
+const handleNavigation = (route) => {
+  if (route === "/logout") {
+    localStorage.removeItem("authToken");
+    localStorage.removeItem("teamName");
+    window.location.href = "/";
+  } else {
+    window.location.href = route;
+  }
+};
+import { onMounted } from "vue";
 </script>
 
 <template>
@@ -47,7 +58,7 @@ const toggleSidebar = () => {
 
       <!-- Menu des liens -->
       <ul>
-        <li v-for="item in menuItems" :key="item.route" @click="navigate(item.route)">
+        <li v-for="item in menuItems" :key="item.route" @click="handleNavigation(item.route)">
           <span class="icon"><span class="material-icons">{{ item.icon }}</span></span>
           <span>{{ item.label }}</span>
         </li>

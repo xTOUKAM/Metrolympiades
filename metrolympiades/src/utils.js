@@ -30,7 +30,7 @@ export const fetchData = async (url, options = {}) => {
     };
 
     const token = localStorage.getItem("authToken");
-    
+
     if (token) {
       headers.Authorization = `Bearer ${token}`;
     }
@@ -40,15 +40,16 @@ export const fetchData = async (url, options = {}) => {
       headers,
     });
 
-    if (response.ok) {
-      return await response.json();
-    } else {
+    if (!response.ok) {
+      // Si la réponse est une erreur (code HTTP > 400)
       const error = await response.json();
       throw new Error(error.message || "Erreur inconnue.");
     }
+
+    return await response.json();
   } catch (error) {
     console.error("Erreur API :", error);
-    throw error;
+    throw error; // Propager l'erreur pour qu'elle soit gérée dans le composant
   }
 };
 
