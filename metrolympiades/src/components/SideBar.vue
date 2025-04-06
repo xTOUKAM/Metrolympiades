@@ -34,12 +34,11 @@ const handleNavigation = (route) => {
   if (route === "/logout") {
     localStorage.removeItem("authToken");
     localStorage.removeItem("teamName");
-    window.location.href = "/";
+    navigate("/");
   } else {
-    window.location.href = route;
+    navigate(route);
   }
 };
-import { onMounted } from "vue";
 </script>
 
 <template>
