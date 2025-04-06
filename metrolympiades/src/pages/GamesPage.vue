@@ -16,7 +16,6 @@ const checkAuthentication = () => {
   if (!token) {
     router.push("/login");
     return;
-    throw new Error("Utilisateur non authentifié.");
   }
 };
 
