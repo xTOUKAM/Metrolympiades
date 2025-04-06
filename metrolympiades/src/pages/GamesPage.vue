@@ -49,38 +49,39 @@ onMounted(() => {
 </script>
 
 <template>
-    <div class="matches-page">
-      <SideBar />
-      <main>
-        <h1 class="title">Mes matchs</h1>
-        <div v-if="isLoading" class="loading-message">Chargement en cours...</div>
-        <div v-else-if="errorMessage" class="error-message">{{ errorMessage }}</div>
-        <div v-else-if="matches.length === 0" class="no-matches-message">
-          <p>Aucun match trouvé pour le moment.</p>
-        </div>
-        <div v-else>
-          <ul class="matches-list">
-            <!-- Affichage de chaque match -->
-            <li v-for="match in matches" :key="match.id" class="match-card">
-              <div class="match-info">
-                <span class="activity">{{ match.activity }}</span>
-                <span class="time">{{ new Date(match.startedAt).toLocaleTimeString("fr-FR", { hour: '2-digit', minute: '2-digit' }) }}</span>
+  <div class="matches-page">
+    <SideBar />
+    <main>
+      <h1 class="title">Mes matchs</h1>
+      <div v-if="isLoading" class="loading-message">Chargement en cours...</div>
+      <div v-else-if="errorMessage" class="error-message">{{ errorMessage }}</div>
+      <div v-else-if="matches.length === 0" class="no-matches-message">
+        <p>Aucun match trouvé pour le moment.</p>
+      </div>
+      <div v-else>
+        <ul class="matches-list">
+          <!-- Affichage de chaque match -->
+          <li v-for="match in matches" :key="match.id" class="match-card">
+            <div class="match-info">
+              <span class="activity">{{ match.activity }}</span>
+              <span class="date">le {{ new Date(match.startedAt).toLocaleDateString("fr-FR") }}</span>
+              <span class="time">à {{ new Date(match.startedAt).toLocaleTimeString("fr-FR", { hour: '2-digit', minute: '2-digit' }) }}</span>
+            </div>
+            <div class="scoreboard">
+              <!-- Ton équipe -->
+              <div :class="['team', { winner: match.team1Score > match.team2Score }]">
+                <span class="team-name">{{ teamName }} | </span>
+                <span :class="{'orange-score': match.team1Score > match.team2Score}">{{ match.team1Score }}</span>
               </div>
-              <div class="scoreboard">
-                <!-- Ton équipe -->
-                <div :class="{ team: true, winner: match.team1Score > match.team2Score }">
-                  <span class="team-name">{{ teamName }}</span>
-                  <span class="score">{{ match.team1Score }}</span>
-                </div>
-                <!-- Équipe adverse -->
-                <div :class="{ team: true, winner: match.team2Score > match.team1Score }">
-                  <span class="team-name">{{ match.team2 }}</span>
-                  <span class="score">{{ match.team2Score }}</span>
-                </div>
+              <!-- Équipe adverse -->
+              <div :class="['team', { winner: match.team2Score > match.team1Score }]">
+                <span class="team-name">{{ match.team2 }} | </span>
+                <span :class="{'orange-score': match.team2Score > match.team1Score}">{{ match.team2Score }}</span>
               </div>
-            </li>
-          </ul>
-        </div>
-      </main>
-    </div>
-  </template>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </main>
+  </div>
+</template>
