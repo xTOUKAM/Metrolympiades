@@ -3,11 +3,11 @@
 Bienvenue sur le projet **Metrolympiades**, une application web conçue pour organiser et suivre des compétitions sportives entre équipes dans tous les domaines. Avec Metrolympiades, vous pouvez gérer vos propres matchs pour votre équipe, enregistrer ses résultats, voir le classement générale de toutes les équipes, ainsi que gérer votre équipe.
 
 ## **Tables des matières**
-- [Apercu](#apercu)
-- [Fonctionnalités](#fonctionnalites)
-- [Technologies utilisées](#technologies-utilisees)
+- [Aperçu](#aperçu)
+- [Fonctionnalités](#fonctionnalités)
+- [Technologies utilisés](#technologies)
 - [Installation](#installation)
-- [Développeurs](#developpeurs)
+- [Développeurs](#développeurs)
 
 ---
 
@@ -25,7 +25,7 @@ Le projet **Metrolympiades** vise à fournir un système intuitif pour gérer le
 
 ---
 
-## **Technologies utiliées**
+## **Technologies**
 ### **Frontend**
 - Vue.js : Framework JavaScript pour le serveur.
 - CSS : Styles harmonieux et réutilisables
