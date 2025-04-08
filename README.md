@@ -43,7 +43,6 @@ Le projet **Metrolympiades** vise à fournir un système intuitif pour gérer le
 ### Prérequis
 Avant de commencer, installez :
 - Node.js (version 14 ou plus récente).
-- MySQL (avec accès à une base de données).
 - Git.
 
 ### Étapes
@@ -71,6 +70,11 @@ Avant de commencer, installez :
 5. **Accéder à l'application** :
    ```bash
    http://localhost:5173
+   ```
+
+6. **Installer l'application du dépôt suivant, et suivez les instructions** :
+   ```bash
+   [http://localhost:5173](https://github.com/ClementCatel/metrolympiades-api)
    ```
 
 ---
