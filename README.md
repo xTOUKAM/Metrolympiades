@@ -50,7 +50,7 @@ Avant de commencer, installez :
 
 1. **Cloner le dépôt** :
    ```bash
-   git clone https://github.com/<ton-utilisateur>/metrolympiades.git
+   git clone https://github.com/xTOUKAM/Metrolympiades.git
    ```
    
 2. **Accéder au répertoire** :
